@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawerToko"
+            android:icon="@drawable/ic_store_black_24dp"
+            android:title="Toko" />
+        <item
+            android:id="@+id/drawerTransaksi"
+            android:icon="@drawable/ic_attach_money_black_24dp"
+            android:title="Transaksi" />
+        <item
+            android:id="@+id/drawerStok"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Stok Barang" />
+    </group>
+    <item
+        android:title="Alat">
+    <menu>
+    <item
+        android:id="@+id/drawerPrinter"
+        android:icon="@drawable/ic_print_black_24dp"
+        android:title="Printer" />
+    </menu>
+    </item>
+    <item
+         android:title="Akun">
+        <menu>
+            <item
+                android:id="@+id/drawerProfil"
+                android:title="Ubah Profil" />
+            <item
+                android:id="@+id/drawerLogout"
+                android:title="Logout" />
+        </menu>
+    </item>
+</menu>
