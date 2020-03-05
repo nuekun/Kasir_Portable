@@ -20,14 +20,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
 import com.nuedevlop.kasirportable.toko.pembelian.PembelianFragment;
 import com.nuedevlop.kasirportable.R;
-import com.nuedevlop.kasirportable.toko.karsir.KasirFragment;
+import com.nuedevlop.kasirportable.toko.penjualan.PenjualanFragment;
 import com.nuedevlop.kasirportable.toko.pengembalian.PengembalianFragment;
 
 
 public class TokoFragment extends Fragment {
 
     private View view;
-    FrameLayout frameToko;
+    private FrameLayout frameToko;
     TabLayout tabToko;
     Context context;
     Fragment fragment;
@@ -54,29 +54,30 @@ public class TokoFragment extends Fragment {
         this.view = view;
 
         txtTittle= getActivity().findViewById(R.id.txtMainTittle);
-        txtTittle.setText("Kasir");
+        txtTittle.setText("Penjualan");
 
 
         frameToko = view.findViewById(R.id.frameToko);
         tabToko = view.findViewById(R.id.tabToko);
 
 
-        fragment = new KasirFragment();
+        fragment = new PenjualanFragment();
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameToko, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
-
+        int tabIconColor = ContextCompat.getColor(context, R.color.tabSelectedIconColor);
+        tabToko.getTabAt(0).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
         tabToko.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(context, R.color.tabSelectedIconColor);
+
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new KasirFragment();
-                        txtTittle.setText("Kasir");
+                        fragment = new PenjualanFragment();
+                        txtTittle.setText("Penjualan");
                         break;
                     case 1:
                         fragment = new PengembalianFragment();

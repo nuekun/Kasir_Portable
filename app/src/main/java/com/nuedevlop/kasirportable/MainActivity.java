@@ -1,5 +1,6 @@
 package com.nuedevlop.kasirportable;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -64,13 +65,20 @@ public class MainActivity extends AppCompatActivity {
                     drawer.setCheckedItem(R.id.drawerStok);
                     txtTittle.setText("Stok");
                     break;
+                case R.id.drawerLogout:
+                    Logout();
+                    break;
             }
-
             drawerLayout.closeDrawer(GravityCompat.START);
-
             return true;
         }
     };
+
+    private void Logout() {
+        Intent intent = new Intent(this,EmailPasswordActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public void onBackPressed() {
