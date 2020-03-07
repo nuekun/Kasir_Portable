@@ -54,7 +54,7 @@
                 android:id="@+id/scannerBar"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:background="#AE2BFF00" />
+                android:background="@color/colorPrimary" />
 
 
         </LinearLayout>

@@ -3,6 +3,7 @@ package com.nuedevlop.kasirportable
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ class ScanActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSION = 10
+        const val RESULT_CODE = 110
     }
 
     private lateinit var textureView: TextureView
@@ -107,14 +109,19 @@ class ScanActivity : AppCompatActivity() {
 
             barCodes.forEach {
 
-                val txtPriview: TextView = findViewById(R.id.txtScanPriview)
-                val btnOk: Button = findViewById(R.id.btnOk)
-                txtPriview.text = it.rawValue
-                txtPriview.visibility = View.VISIBLE
-                btnOk.visibility = View.VISIBLE
-                btnOk.setOnClickListener {
-                    finish()
-                }
+           //     val txtPriview: TextView = findViewById(R.id.txtScanPriview)
+          //      val btnOk: Button = findViewById(R.id.btnOk)
+           //     txtPriview.text = it.rawValue
+           //     txtPriview.visibility = View.VISIBLE
+           //     btnOk.visibility = View.VISIBLE
+           //     btnOk.setOnClickListener {
+                val resultIntent = Intent()
+                 //   resultIntent.putExtra(EXTRA_SELECTED_VALUE, txtPriview.text.toString())
+                resultIntent.putExtra("barcode", it.rawValue.toString())
+                setResult(RESULT_CODE, resultIntent)
+                finish()
+
+            //    }
 
                 Log.d("ScanerActivity", "QR Code detected: ${it.rawValue}.")
 
@@ -139,7 +146,7 @@ class ScanActivity : AppCompatActivity() {
             if (isCameraPermissionGranted()) {
                 textureView.post { startCamera() }
             } else {
-                Toast.makeText(this, "Camera permission is required.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "dibutuhkan ijin untuk kamera", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }

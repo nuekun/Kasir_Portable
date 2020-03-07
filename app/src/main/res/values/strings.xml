@@ -15,4 +15,16 @@
         <item>Pilih Jenis Produk</item>
     </string-array>
 
+    <string-array name="spin_pengembalian">
+        <item>Barang Rusak</item>
+        <item>Salah Beli</item>
+        <item>Kadaluarsa</item>
+    </string-array>
+
+    <string-array name="spin_pembelian">
+        <item>Restok</item>
+        <item>Tukar</item>
+        <item>Kembali</item>
+    </string-array>
+
 </resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrinterActivity">
+
+    <Button
+        android:id="@+id/btnHubungkan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_ui_background"
+        android:text="Hubungkan Bluetooth"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="519dp" />
+
+    <TextView
+        android:id="@+id/txtBluetoothStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="status : "
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="111dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
