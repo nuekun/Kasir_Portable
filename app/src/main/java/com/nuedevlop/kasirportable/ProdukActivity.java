@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ProdukActivity extends AppCompatActivity {
-    ImageButton btnScan;
+    ImageButton btnScan,btnCari;
+    Button btnKembali,btnTambah;
     private final int REQUEST_CODE = 110;
 
     @Override
@@ -19,7 +21,14 @@ public class ProdukActivity extends AppCompatActivity {
         init();
 
         btnScan.setOnClickListener(v -> ambilBarcode());
+        btnKembali.setOnClickListener(v->finish());
+        btnTambah.setOnClickListener(v->tambahProduk());
 
+    }
+
+    private void tambahProduk() {
+        Intent intent = new Intent(this,TambahProdukActivity.class);
+        startActivity(intent);
     }
 
     private void ambilBarcode() {
@@ -29,6 +38,9 @@ public class ProdukActivity extends AppCompatActivity {
 
     private void init() {
         btnScan = findViewById(R.id.btnProdukScan);
+        btnKembali = findViewById(R.id.btnProdukKembali);
+        btnCari = findViewById(R.id.btnProdukCari);
+        btnTambah = findViewById(R.id.btnProdukTambah);
     }
 
 
