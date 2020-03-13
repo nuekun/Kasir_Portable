@@ -19,11 +19,16 @@ public interface ProdukDAO {
     @Query("SELECT COUNT(idProduk) FROM produk WHERE barcode = :barcode")
     int getCountByBarcode(String barcode);
 
-    @Query("SELECT * FROM produk WHERE jenis = :jenis")
-    List<Produk> getProdukByJenis(String jenis);
+    @Query("SELECT COUNT(idProduk) FROM produk WHERE nama = :nama")
+    int getCountByNama(String nama);
 
-    @Query("SELECT * FROM produk")
-    List<Produk> getAllProduk();
+    @Query("SELECT * FROM produk WHERE jenis like '%'||:jenis||'%' and nama like '%'||:nama||'%' ORDER BY nama ASC")
+    List<Produk> getProdukByJenisAndNama(String jenis , String nama);
+
+    @Query("SELECT * FROM produk WHERE barcode = :barcode")
+    List<Produk> getProdukbyBarcode(String barcode);
+
+
 
 
 }

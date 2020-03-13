@@ -6,30 +6,30 @@
     tools:context=".user.LoginFragment">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
         android:paddingStart="16dp"
         android:paddingLeft="16dp"
         android:paddingTop="8dp"
-        android:gravity="center"
-        android:background="@drawable/frame_background"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp">
 
         <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="E-mail"
-            android:inputType="textEmailAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:inputType="textEmailAddress" />
 
         <EditText
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -13,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.nuedevlop.kasirportable.ProdukActivity;
 import com.nuedevlop.kasirportable.R;
+import com.nuedevlop.kasirportable.adapter.ProdukAdapter;
+import com.nuedevlop.kasirportable.utils.database.Produk;
 
 
 public class PenjualanFragment extends Fragment {
@@ -24,6 +27,7 @@ public class PenjualanFragment extends Fragment {
     private Context context;
     Button btnProses;
     ImageButton btnTambah;
+    private final int RecKodeProduk = 210;
 
 
     public PenjualanFragment() {
@@ -46,7 +50,7 @@ public class PenjualanFragment extends Fragment {
 
         btnTambah.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProdukActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, RecKodeProduk);
         });
 
 
@@ -63,6 +67,20 @@ public class PenjualanFragment extends Fragment {
         this.context = context;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RecKodeProduk && resultCode == ProdukAdapter.KodeProduk) {
+
+            Produk produk = new Produk();
+            produk = data.getParcelableExtra(ProdukAdapter.ExtraProduk);
+
+            Toast.makeText(context, produk.getNama(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
 }
 
 

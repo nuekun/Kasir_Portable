@@ -19,7 +19,7 @@ public interface JenisDAO {
     @Query("DELETE FROM jenis WHERE jenisProduk = :jenisProduk")
     void deleteJenis(String jenisProduk);
 
-    @Query("SELECT * FROM jenis")
+    @Query("SELECT * FROM jenis ORDER BY JenisProduk ASC")
     List<Jenis> getAllJenis();
 
 }

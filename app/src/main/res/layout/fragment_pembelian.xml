@@ -26,29 +26,9 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:orientation="vertical"
-            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/tabSelectedIconColor"
-                    android:ems="10"
-                    android:hint="Nama Suplier"
-                    android:inputType="textPersonName"
-                    android:padding="5dp"
-                    android:textAlignment="center" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

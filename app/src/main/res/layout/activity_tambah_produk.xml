@@ -20,7 +20,8 @@
                 android:id="@+id/txtTambahProdukNama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nama" />
+                android:hint="Nama"
+                android:inputType="textPersonName" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,6 +70,13 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/btnTambahProdukEditJenis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_edit_black_24dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,16 +86,76 @@
                 android:id="@+id/spinTambahProdukJenis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/btnTambahProdukEditJenis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_edit_black_24dp" />
+                android:layout_weight="1"
+                android:entries="@array/jenis_produk"
+                android:textAlignment="center" />
 
         </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtTambahProdukBeli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Harga Beli"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtTambahProdukJual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Harga Jual"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtTambahProdukStok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Stok"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtTambahProdukKeterangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Keterangan" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnTambahProdukSimpan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Simpan"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btnTambahProdukUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

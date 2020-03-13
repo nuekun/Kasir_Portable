@@ -11,8 +11,13 @@
         <item>Pembelian</item>
     </string-array>
 
+
     <string-array name="spin_produk">
         <item>Pilih Jenis Produk</item>
+    </string-array>
+
+    <string-array name="jenis_produk">
+        <item>Tambahkan jenis</item>
     </string-array>
 
     <string-array name="spin_pengembalian">

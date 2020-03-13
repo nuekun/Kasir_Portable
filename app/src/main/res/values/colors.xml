@@ -8,5 +8,6 @@
     <color name="tabUnselectedBGColor">#752900</color>
     <color name="whiteText">#FFFEFC</color>
     <color name="white">#FFFEFF</color>
+    <color name="transprant">#00FFFEFF</color>
 
 </resources>

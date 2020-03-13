@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 
-@Entity(tableName = "produk" , indices =  @Index(value = {"barcode"}, unique = true))
+@Entity(tableName = "produk" , indices =  @Index(value = {"nama"}, unique = true))
 public class Produk implements Parcelable{
 
     @PrimaryKey(autoGenerate = true) private int idProduk;
@@ -24,15 +24,15 @@ public class Produk implements Parcelable{
     @SerializedName(value = "stok") private int stok ;
 
     protected Produk(Parcel in) {
-        idProduk = in.readInt();
-        barcode = in.readString();
-        nama = in.readString();
-        suplier = in.readString();
-        jenis = in.readString();
-        keterangan = in.readString();
-        hargaBeli = in.readInt();
-        hargaJual = in.readInt();
-        stok = in.readInt();
+        this.idProduk = in.readInt();
+        this.barcode = in.readString();
+        this.nama = in.readString();
+        this.suplier = in.readString();
+        this.jenis = in.readString();
+        this.keterangan = in.readString();
+        this.hargaBeli = in.readInt();
+        this.hargaJual = in.readInt();
+        this.stok = in.readInt();
     }
 
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {
