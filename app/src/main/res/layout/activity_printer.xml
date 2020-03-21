@@ -7,20 +7,51 @@
     tools:context=".PrinterActivity">
 
     <Button
-        android:id="@+id/btnHubungkan"
+        android:id="@+id/btnPrinterHubungkan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@drawable/button_ui_background"
         android:text="Hubungkan Bluetooth"
         android:textColor="@color/white"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="519dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPrinterStatus" />
 
-    <TextView
-        android:id="@+id/txtBluetoothStatus"
+    <Button
+        android:id="@+id/btnPrinterPutuskan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_ui_background"
+        android:text="Lepas Bluetooth"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPrinterTes" />
+
+    <Button
+        android:id="@+id/btnPrinterTes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_ui_background"
+        android:text="Coba Print"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPrinterHubungkan" />
+
+    <TextView
+        android:id="@+id/txtPrinterStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="status : "
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="111dp" />
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

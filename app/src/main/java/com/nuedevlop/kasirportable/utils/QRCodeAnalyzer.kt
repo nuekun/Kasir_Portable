@@ -16,7 +16,7 @@ class QrCodeAnalyzer(
 
     override fun analyze(image: ImageProxy, rotationDegrees: Int) {
         val options = FirebaseVisionBarcodeDetectorOptions.Builder()
-                .setBarcodeFormats(8,32,64,512,1024)
+                .setBarcodeFormats(0)
                 .build()
 
         val detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options)

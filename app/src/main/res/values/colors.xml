@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FDB500</color>
-    <color name="colorPrimaryDark">#DD7200</color>
-    <color name="colorAccent">#DD9E00</color>
+    <color name="colorPrimaryDark">#FEB326</color>
+    <color name="colorPrimary">#DD7200</color>
+    <color name="colorAccent">#64C5EB</color>
     <color name="tabSelectedIconColor">#FFFEFC</color>
     <color name="tabUnselectedIconColor">#0C0C0C</color>
     <color name="tabUnselectedBGColor">#752900</color>

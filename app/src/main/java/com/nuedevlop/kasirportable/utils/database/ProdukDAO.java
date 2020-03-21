@@ -28,7 +28,4 @@ public interface ProdukDAO {
     @Query("SELECT * FROM produk WHERE barcode = :barcode")
     List<Produk> getProdukbyBarcode(String barcode);
 
-
-
-
 }

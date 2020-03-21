@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +35,7 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
 
     private Context context;
     private List<Produk> produks;
-    ProdukDAO produkDAO;
+    private ProdukDAO produkDAO;
 
 
     public ProdukAdapter(Context context, List<Produk> produks) {
@@ -87,11 +86,10 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
         produk.setIdProduk(id);
         produk.setSuplier(suplier);
         produk.setBarcode(barcode);
+        produk.setJenis(jenis);
 
         holder.txtnama.setText(nama);
-        holder.txtnamaShadow.setText(nama);
-        holder.txtHarga.setText(rpHarga);
-        holder.txtJenis.setText(jenis);
+        holder.txtKeterangan.setText(keterangan);
 
         holder.root.setOnClickListener(v -> {
 
@@ -104,21 +102,30 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
         });
         holder.root.setOnLongClickListener(v -> {
             //Toast.makeText(context, keterangan, Toast.LENGTH_SHORT).show();
-            holder.btnEdit.setVisibility(View.VISIBLE);
-            holder.btnDetail.setVisibility(View.VISIBLE);
-            holder.btnHapus.setVisibility(View.VISIBLE);
-
+            if (holder.btnHapus.getVisibility() == View.VISIBLE){
+                holder.btnEdit.setVisibility(View.GONE);
+                holder.btnDetail.setVisibility(View.GONE);
+                holder.btnHapus.setVisibility(View.GONE);
+            }else {
+                holder.btnEdit.setVisibility(View.VISIBLE);
+                holder.btnDetail.setVisibility(View.VISIBLE);
+                holder.btnHapus.setVisibility(View.VISIBLE);
+            }
 
             return true;
         });
 
 
         holder.btnHapus.setOnClickListener(v->{
-            produkDAO.deleteByidProduk(id);
-            produks.remove(position);
-            this.notifyItemRemoved(position);
-            this.notifyItemRangeChanged(position, produks.size());
-            this.notifyDataSetChanged();
+
+                produkDAO.deleteByidProduk(id);
+                produks.remove(position);
+                this.notifyItemRemoved(position);
+                this.notifyItemRangeChanged(position, produks.size());
+                this.notifyDataSetChanged();
+                holder.btnEdit.setVisibility(View.GONE);
+                holder.btnDetail.setVisibility(View.GONE);
+                holder.btnHapus.setVisibility(View.GONE);
 
         });
 
@@ -181,7 +188,7 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtnama,txtnamaShadow,txtHarga,txtJenis;
+        TextView txtnama,txtKeterangan;
         RelativeLayout root;
         ImageButton btnHapus,btnDetail,btnEdit;
 
@@ -190,12 +197,10 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
             super(view);
             root = view.findViewById(R.id.rootProduk);
             txtnama = view.findViewById(R.id.txtListProdukNama);
-            txtnamaShadow = view.findViewById(R.id.txtListProdukNamaShadow);
-            txtHarga = view.findViewById(R.id.txtListProdukHarga);
-            txtJenis = view.findViewById(R.id.txtListProdukJenis);
             btnDetail = view.findViewById(R.id.btnListProdukDetail);
             btnEdit = view.findViewById(R.id.btnListProdukEdit);
             btnHapus = view.findViewById(R.id.btnListProdukHapus);
+            txtKeterangan = view.findViewById(R.id.txtListProdukKeterangan);
         }
     }
 

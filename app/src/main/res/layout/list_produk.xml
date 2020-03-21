@@ -4,154 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootProduk"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtListProdukNama"
-        android:layout_alignBottom="@+id/txtListProdukJenis"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="-15dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/list" />
-
-    <TextView
-        android:id="@+id/txtListProdukNamaShadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:text="Nama"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    android:layout_height="wrap_content"
+    android:background="@drawable/list"
+    android:paddingTop="12dp">
 
     <TextView
         android:id="@+id/txtListProdukNama"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/nama_background"
-        android:gravity="center"
-        android:text="Nama"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblListProdukHargaShadow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtListProdukNama"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="6dp"
-        android:text="Harga "
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblListProdukHarga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtListProdukNama"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:text="Harga "
-        android:textColor="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/txtListProdukHarga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/lblListProdukHarga"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/lblListProdukHarga"
-        android:text="RP.100.000"
-        android:textColor="@color/whiteText"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblListPRodukJenisShadow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lblListProdukHarga"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="12dp"
-        android:text="Jenis"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblListPRodukJenis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lblListProdukHarga"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="11dp"
-        android:text="Jenis"
-        android:textColor="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/txtListProdukJenis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtListProdukHarga"
-        android:layout_alignTop="@+id/lblListPRodukJenis"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:text="123"
-        android:textColor="@color/white"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="17dp"
+        android:layout_toStartOf="@+id/btnListProdukHapus"
+        android:text="Nama Produk"
+        android:textAllCaps="true"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/btnListProdukDetail"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_alignBottom="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="25dp"
-        android:background="@drawable/button_background"
-        android:visibility="invisible"
+        android:background="@color/transprant"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_remove_red_eye_black_24dp" />
 
     <ImageButton
         android:id="@+id/btnListProdukEdit"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_alignBottom="@+id/imageView3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/button_background"
-        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="3dp"
+        android:layout_toStartOf="@+id/btnListProdukDetail"
+        android:background="@color/transprant"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
     <ImageButton
         android:id="@+id/btnListProdukHapus"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_alignBottom="@+id/imageView3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="95dp"
-        android:background="@drawable/button_background"
-        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="3dp"
+        android:layout_toStartOf="@+id/btnListProdukEdit"
+        android:background="@color/transprant"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_delete_black_24dp" />
 
+    <TextView
+        android:id="@+id/txtListProdukKeterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtListProdukNama"
+        android:layout_alignStart="@+id/txtListProdukNama"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="17dp"
+        android:layout_toStartOf="@+id/btnListProdukHapus"
+        android:paddingBottom="12dp"
+        android:text="lorem ipsum dolur impnum sum"
+        android:textColor="@color/whiteText"
+        android:textStyle="bold" />
 </RelativeLayout>

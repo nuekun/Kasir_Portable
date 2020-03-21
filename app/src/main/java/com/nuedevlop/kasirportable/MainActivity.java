@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.drawerLogout:
                     Logout();
                     break;
+                case R.id.drawerPrinter:
+                    Intent intent = new Intent(MainActivity.this,PrinterActivity.class);
+                    startActivity(intent);
+                    break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
