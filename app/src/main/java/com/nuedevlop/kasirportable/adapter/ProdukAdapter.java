@@ -19,9 +19,10 @@ import androidx.room.Room;
 import com.nuedevlop.kasirportable.ProdukActivity;
 import com.nuedevlop.kasirportable.R;
 import com.nuedevlop.kasirportable.TambahProdukActivity;
-import com.nuedevlop.kasirportable.utils.database.Produk;
-import com.nuedevlop.kasirportable.utils.database.ProdukDAO;
-import com.nuedevlop.kasirportable.utils.database.ProdukDB;
+import com.nuedevlop.kasirportable.utils.Utils;
+import com.nuedevlop.kasirportable.utils.database.produk.Produk;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -56,6 +57,10 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+
+
+
         String nama,keterangan,jenis,rpHarga,rpKulak,suplier,barcode;
         int stok , hargaBeli,hargaJual;
         DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
@@ -90,6 +95,8 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukAdapter.ViewHolder
 
         holder.txtnama.setText(nama);
         holder.txtKeterangan.setText(keterangan);
+
+
 
         holder.root.setOnClickListener(v -> {
 

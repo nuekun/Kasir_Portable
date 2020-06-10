@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.nuedevlop.kasirportable.R;
-import com.nuedevlop.kasirportable.utils.database.Proses;
-import com.nuedevlop.kasirportable.utils.database.ProsesDAO;
+import com.nuedevlop.kasirportable.utils.database.proses.Proses;
+import com.nuedevlop.kasirportable.utils.database.proses.ProsesDAO;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

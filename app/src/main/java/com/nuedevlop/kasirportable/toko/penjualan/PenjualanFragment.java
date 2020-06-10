@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.mazenrashed.printooth.Printooth;
 import com.mazenrashed.printooth.data.printable.Printable;
 import com.mazenrashed.printooth.data.printable.TextPrintable;
@@ -34,15 +35,30 @@ import com.nuedevlop.kasirportable.ProdukActivity;
 import com.nuedevlop.kasirportable.R;
 import com.nuedevlop.kasirportable.adapter.ProdukAdapter;
 import com.nuedevlop.kasirportable.adapter.ProsesAdapter;
-import com.nuedevlop.kasirportable.utils.database.Produk;
-import com.nuedevlop.kasirportable.utils.database.Proses;
-import com.nuedevlop.kasirportable.utils.database.ProsesDAO;
-import com.nuedevlop.kasirportable.utils.database.ProsesDB;
+import com.nuedevlop.kasirportable.utils.Utils;
+import com.nuedevlop.kasirportable.utils.database.Refrensi;
+import com.nuedevlop.kasirportable.utils.database.RefrensiDAO;
+import com.nuedevlop.kasirportable.utils.database.RefrensiDB;
+import com.nuedevlop.kasirportable.utils.database.Transaksi;
+import com.nuedevlop.kasirportable.utils.database.TransaksiDAO;
+import com.nuedevlop.kasirportable.utils.database.TransaksiDB;
+import com.nuedevlop.kasirportable.utils.database.produk.Produk;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
+import com.nuedevlop.kasirportable.utils.database.proses.Proses;
+import com.nuedevlop.kasirportable.utils.database.proses.ProsesDAO;
+import com.nuedevlop.kasirportable.utils.database.proses.ProsesDB;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import static com.nuedevlop.kasirportable.utils.Utils.formate_refrensi;
+import static com.nuedevlop.kasirportable.utils.Utils.formate_year_month_day_hour_minute_second;
 
 
 public class PenjualanFragment extends Fragment {
@@ -52,16 +68,23 @@ public class PenjualanFragment extends Fragment {
     Button btnProses;
     ImageButton btnTambah;
     private final int RecKodeProduk = 210;
-    ProsesDAO prosesDAO;
-    TextView txtTotal;
-    List<Proses> proses;
-    DecimalFormat kursIndonesia;
-    DecimalFormatSymbols formatRp;
+    private ProsesDAO prosesDAO;
+    private TransaksiDAO transaksiDAO;
+    private TextView txtTotal;
+    private List<Proses> proses;
+    private DecimalFormat kursIndonesia;
+    private DecimalFormatSymbols formatRp;
     private Printing printing = null;
-    PrintingCallback printingCallback=null;
+    private PrintingCallback printingCallback=null;
+    private String refrensi,tanggal;
+    private Date date = new Date();
+    private UUID uuid = UUID.randomUUID();
+    RefrensiDAO refrensiDAO ;
+    private ProdukDAO produkDAO;
+
+    int laba,totalBeli,totalJual;
 
     public PenjualanFragment() {
-
         // Required empty public constructor
     }
 
@@ -79,22 +102,83 @@ public class PenjualanFragment extends Fragment {
         init();
 
 
-
         btnTambah.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProdukActivity.class);
             startActivityForResult(intent, RecKodeProduk);
         });
 
+
         btnProses.setOnClickListener(v-> {
-            cetakStrukk();
-            prosesDAO.deleteALL();
-            ambilProses();
+
+            Button btnBatal,btnSimpan,btncetak;
+
+            tanggal = Utils.get_string_from_date_object(date,formate_year_month_day_hour_minute_second);
+            refrensi = uuid.toString()+Utils.get_string_from_date_object(date,formate_refrensi);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            @SuppressLint("InflateParams") View v2 = LayoutInflater.from(context).inflate(R.layout.dialog_cetak_struk, null);
+            builder.setView(v2);
+            AlertDialog dialog = builder.create();
+
+            btnBatal = v2.findViewById(R.id.btnDialogCetakBatal);
+            btnSimpan = v2.findViewById(R.id.btnDialogCetakTidak);
+            btncetak = v2.findViewById(R.id.btnDialogCetakYa);
+
+            btnBatal.setOnClickListener(v3->dialog.dismiss());
+            btnSimpan.setOnClickListener(v3->{
+                simpanTransaksi(tanggal,refrensi);
+                dialog.dismiss();
+
+            });
+            btncetak.setOnClickListener(v3->{
+                cetakStrukk();
+                simpanTransaksi(tanggal,refrensi);
+                dialog.dismiss();
+            });
+
+            if (proses.size()>0){
+                dialog.show();
+            }
+
         });
 
         ambilProses();
 
+    }
 
+    private void simpanTransaksi(String tanggal,String refrensi) {
 
+        Refrensi ref = new Refrensi();
+
+        for (Proses proses : proses) {
+            Transaksi transaksi = new Transaksi();
+                transaksi.setDetail(proses.getDetail());
+                transaksi.setHargaBeli(proses.getHargaBeli());
+                transaksi.setHargaJual(proses.getHargaJual());
+                transaksi.setIdProduk(proses.getIdProduk());
+                transaksi.setJumlah(proses.getJumlah());
+                transaksi.setNama(proses.getNama());
+                transaksi.setJenis(proses.getJenis());
+                transaksi.setTipe("penjualan");
+                transaksi.setRefrensi(refrensi);
+                transaksi.setTanggal(tanggal);
+            transaksiDAO.insert(transaksi);
+
+            List<Produk> produkList = produkDAO.getProdukByID(proses.getIdProduk());
+
+            produkDAO.updateStok(produkList.get(0).getStok() - proses.getJumlah(),proses.getIdProduk());
+
+        }
+
+        ref.setRefrensi(refrensi);
+        ref.setJenis("penjualan");
+        ref.setTanggal(tanggal);
+        ref.setValuasi(laba);
+
+        refrensiDAO.insert(ref);
+
+        prosesDAO.deleteALL();
+        ambilProses();
     }
 
     private void cetakStrukk(){
@@ -104,18 +188,18 @@ public class PenjualanFragment extends Fragment {
         if (printing!=null){
             ArrayList<Printable> al = new ArrayList<>();
 
-            al.add((new TextPrintable.Builder())
-                    .setText("Nama Toko")
-                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
-                    .setNewLinesAfter(1)
-                    .build());
-            al.add((new TextPrintable.Builder())
-                    .setText("Alamat Toko dan no HP")
-                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
-                    .setUnderlined(DefaultPrinter.Companion.getUNDERLINED_MODE_ON())
-                    .setNewLinesAfter(1)
-                    .build());
-
+//            al.add((new TextPrintable.Builder())
+//                    .setText("Nama Toko")
+//                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
+//                    .setNewLinesAfter(1)
+//                    .build());
+//            al.add((new TextPrintable.Builder())
+//                    .setText("Alamat Toko dan no HP")
+//                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
+//                    .setUnderlined(DefaultPrinter.Companion.getUNDERLINED_MODE_ON())
+//                    .setNewLinesAfter(1)
+//                    .build());
+//
 
             int totalItem = 0 ;
             int tagihan=0;
@@ -171,6 +255,21 @@ public class PenjualanFragment extends Fragment {
         btnProses = view.findViewById(R.id.btnPenjualanProses);
         btnTambah = view.findViewById(R.id.btnPenjualanTambah);
         txtTotal = view.findViewById(R.id.txtPenjualanTotal);
+
+        produkDAO = Room.databaseBuilder(context, ProdukDB.class,"Produk")
+                .allowMainThreadQueries()
+                .build()
+                .getProdukDAO();
+
+        refrensiDAO = Room.databaseBuilder(context, RefrensiDB.class,"refrensi")
+                .allowMainThreadQueries()
+                .build()
+                .getRefrensiDAO();
+
+        transaksiDAO = Room.databaseBuilder(context, TransaksiDB.class,"transaksi")
+                .allowMainThreadQueries()
+                .build()
+                .getTransaksiDAO();
 
         prosesDAO = Room.databaseBuilder(context, ProsesDB.class,"penjulan")
                 .allowMainThreadQueries()
@@ -253,17 +352,25 @@ public class PenjualanFragment extends Fragment {
 
                 if (txtJumlah.getText().length()!=0){
                     if (Integer.valueOf(txtJumlah.getText().toString())>0){
-                        proses.setJumlah(Integer.parseInt(txtJumlah.getText().toString()));
-                        proses.setNama(finalProduk.getNama());
-                        proses.setIdProduk(finalProduk.getIdProduk());
-                        proses.setJenis(finalProduk.getJenis());
-                        proses.setHargaBeli(finalProduk.getHargaBeli());
-                        proses.setHargaJual(finalProduk.getHargaJual());
-                        proses.setDetail("");
-                        if (prosesDAO.getProsesCountbyNama(finalProduk.getNama())>0){
-                            Toast.makeText(context, "Produk sudah ada !", Toast.LENGTH_SHORT).show();
-                        } else {
-                            prosesDAO.insert(proses);
+
+                        List<Produk> produkList = produkDAO.getProdukByID(finalProduk.getIdProduk());
+                        int stok = produkList.get(0).getStok();
+
+                        if(stok<Integer.parseInt(txtJumlah.getText().toString())){
+                            Toast.makeText(context, "stok tidak cukup", Toast.LENGTH_SHORT).show();
+                        }else{
+                            proses.setJumlah(Integer.parseInt(txtJumlah.getText().toString()));
+                            proses.setNama(finalProduk.getNama());
+                            proses.setIdProduk(finalProduk.getIdProduk());
+                            proses.setJenis(finalProduk.getJenis());
+                            proses.setHargaBeli(finalProduk.getHargaBeli());
+                            proses.setHargaJual(finalProduk.getHargaJual());
+                            proses.setDetail("Penjualan");
+                            if (prosesDAO.getProsesCountbyNama(finalProduk.getNama())>0){
+                                Toast.makeText(context, "Produk sudah ada !", Toast.LENGTH_SHORT).show();
+                            } else {
+                                prosesDAO.insert(proses);
+                            }
                         }
 
                     }else {
@@ -286,7 +393,8 @@ public class PenjualanFragment extends Fragment {
 
     private void ambilProses() {
 
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.frameToko);
+        Fragment currentFragment = Objects.requireNonNull(getActivity()).getSupportFragmentManager().findFragmentById(R.id.frameToko);
+        assert getFragmentManager() != null;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
 
@@ -298,13 +406,16 @@ public class PenjualanFragment extends Fragment {
         ProsesAdapter prosesAdapter = new ProsesAdapter("penjualan",proses,context,prosesDAO,currentFragment,fragmentTransaction);
         recyclerView.setAdapter(prosesAdapter);
 
-        int total = 0;
+        totalJual = 0;
+        totalBeli= 0;
+        laba = 0;
 
         for(int i = 0 ; i<proses.size();i++){
-            total = total + (proses.get(i).getHargaJual()*proses.get(i).getJumlah());
+            totalJual = totalJual + (proses.get(i).getHargaJual()*proses.get(i).getJumlah());
+            totalBeli = totalBeli + (proses.get(i).getHargaBeli()*proses.get(i).getJumlah());
         }
-
-        txtTotal.setText(kursIndonesia.format(total));
+        laba = totalJual-totalBeli;
+        txtTotal.setText(kursIndonesia.format(totalBeli));
 
 
 

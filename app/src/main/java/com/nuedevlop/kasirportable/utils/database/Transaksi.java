@@ -8,48 +8,58 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+
+
 @Entity
-public class Proses implements Parcelable {
-    @PrimaryKey(autoGenerate = true) private int idProses;
+public class Transaksi implements Parcelable {
+    @PrimaryKey(autoGenerate = true) private int idTransaksi;
     @SerializedName(value = "nama") private String nama;
     @SerializedName(value = "jenis") private String jenis ;
     @SerializedName(value = "detail") private String detail;
+    @SerializedName(value = "tipe") private String tipe;
+    @SerializedName(value = "refrensi") private String refrensi;
+    @SerializedName(value = "tanggal") private String tanggal;
     @SerializedName(value = "idProduk") private int idProduk ;
     @SerializedName(value = "hargaBeli") private int hargaBeli ;
     @SerializedName(value = "hargaJual") private int hargaJual ;
     @SerializedName(value = "jumlah") private int jumlah ;
 
-    public Proses(){}
-
-    public Proses(Parcel in) {
-        this.idProses = in.readInt();
+    public Transaksi(Parcel in) {
+        this.idTransaksi = in.readInt();
         this.nama = in.readString();
         this.jenis = in.readString();
         this.detail = in.readString();
+        this.tipe = in.readString();
+        this.refrensi = in.readString();
+        this.tanggal = in.readString();
         this.idProduk = in.readInt();
         this.hargaBeli = in.readInt();
         this.hargaJual = in.readInt();
         this.jumlah = in.readInt();
     }
 
-    public static final Creator<Proses> CREATOR = new Creator<Proses>() {
+    public static final Creator<Transaksi> CREATOR = new Creator<Transaksi>() {
         @Override
-        public Proses createFromParcel(Parcel in) {
-            return new Proses(in);
+        public Transaksi createFromParcel(Parcel in) {
+            return new Transaksi(in);
         }
 
         @Override
-        public Proses[] newArray(int size) {
-            return new Proses[size];
+        public Transaksi[] newArray(int size) {
+            return new Transaksi[size];
         }
     };
 
-    public int getIdProses() {
-        return idProses;
+    public Transaksi() {
+
     }
 
-    public void setIdProses(int idProses) {
-        this.idProses = idProses;
+    public int getIdTransaksi() {
+        return idTransaksi;
+    }
+
+    public void setIdTransaksi(int idTransaksi) {
+        this.idTransaksi = idTransaksi;
     }
 
     public String getNama() {
@@ -74,6 +84,30 @@ public class Proses implements Parcelable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getRefrensi() {
+        return refrensi;
+    }
+
+    public void setRefrensi(String refrensi) {
+        this.refrensi = refrensi;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
     public int getIdProduk() {
@@ -114,14 +148,17 @@ public class Proses implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.idProses);
-        dest.writeString(this.nama);
-        dest.writeString(this.jenis);
-        dest.writeString(this.detail);
-        dest.writeInt(this.idProduk);
-        dest.writeInt(this.hargaBeli);
-        dest.writeInt(this.hargaJual);
-        dest.writeInt(this.jumlah);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.idTransaksi);
+        parcel.writeString(this.nama);
+        parcel.writeString(this.jenis);
+        parcel.writeString(this.detail);
+        parcel.writeString(this.tipe);
+        parcel.writeString(this.refrensi);
+        parcel.writeString(this.tanggal);
+        parcel.writeInt(this.idProduk);
+        parcel.writeInt(this.hargaBeli);
+        parcel.writeInt(this.hargaJual);
+        parcel.writeInt(this.jumlah);
     }
 }

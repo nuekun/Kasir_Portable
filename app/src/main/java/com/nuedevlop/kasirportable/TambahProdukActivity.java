@@ -4,30 +4,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
-import androidx.room.Update;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.text.Editable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.nuedevlop.kasirportable.utils.database.Jenis;
-import com.nuedevlop.kasirportable.utils.database.JenisDAO;
-import com.nuedevlop.kasirportable.utils.database.JenisDB;
-import com.nuedevlop.kasirportable.utils.database.Produk;
-import com.nuedevlop.kasirportable.utils.database.ProdukDAO;
-import com.nuedevlop.kasirportable.utils.database.ProdukDB;
+import com.nuedevlop.kasirportable.utils.database.jenis.Jenis;
+import com.nuedevlop.kasirportable.utils.database.jenis.JenisDAO;
+import com.nuedevlop.kasirportable.utils.database.jenis.JenisDB;
+import com.nuedevlop.kasirportable.utils.database.produk.Produk;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,6 +179,7 @@ public class TambahProdukActivity extends AppCompatActivity {
     }
 
     private void init() {
+
 
         jenisDAO = Room.databaseBuilder(this, JenisDB.class, "produk")
                 .allowMainThreadQueries()

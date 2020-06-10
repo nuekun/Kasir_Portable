@@ -1,10 +1,11 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.produk;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -27,5 +28,13 @@ public interface ProdukDAO {
 
     @Query("SELECT * FROM produk WHERE barcode = :barcode")
     List<Produk> getProdukbyBarcode(String barcode);
+
+    @Query("UPDATE produk SET stok =:valueStok WHERE idProduk =:idProduk ")
+    void updateStok(int valueStok , int idProduk);
+
+    @Query("SELECT * FROM produk WHERE idProduk =:idProduk")
+    List<Produk> getProdukByID(int idProduk);
+
+
 
 }

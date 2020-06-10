@@ -1,4 +1,4 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.produk;
 
 import android.os.Parcel;
 import android.os.Parcelable;

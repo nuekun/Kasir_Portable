@@ -21,12 +21,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nuedevlop.kasirportable.adapter.ProdukAdapter;
-import com.nuedevlop.kasirportable.utils.database.Jenis;
-import com.nuedevlop.kasirportable.utils.database.JenisDAO;
-import com.nuedevlop.kasirportable.utils.database.JenisDB;
-import com.nuedevlop.kasirportable.utils.database.Produk;
-import com.nuedevlop.kasirportable.utils.database.ProdukDAO;
-import com.nuedevlop.kasirportable.utils.database.ProdukDB;
+import com.nuedevlop.kasirportable.utils.database.jenis.Jenis;
+import com.nuedevlop.kasirportable.utils.database.jenis.JenisDAO;
+import com.nuedevlop.kasirportable.utils.database.jenis.JenisDB;
+import com.nuedevlop.kasirportable.utils.database.produk.Produk;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
+import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,6 +146,8 @@ public class ProdukActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     private void init() {
+
+
 
         produkDAO = Room.databaseBuilder(this, ProdukDB.class,"Produk")
                 .allowMainThreadQueries()

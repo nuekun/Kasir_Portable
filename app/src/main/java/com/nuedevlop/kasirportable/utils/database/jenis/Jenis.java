@@ -1,4 +1,4 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.jenis;
 
 
 import android.os.Parcel;

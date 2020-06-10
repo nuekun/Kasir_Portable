@@ -3,15 +3,15 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/tab"
     android:orientation="vertical">
 
     <ImageButton
+        android:id="@+id/btnDrawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
-        android:src="@drawable/ic_reorder_black_24dp"
-        android:id="@+id/btnDrawer"/>
+        android:src="@drawable/ic_reorder_black_24dp" />
 
     <TextView
         android:id="@+id/txtMainTittle"
