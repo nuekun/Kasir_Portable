@@ -37,6 +37,7 @@ class ScanActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scan)
 
 
+
         textureView = findViewById(R.id.view_finder)
 
         //Scanner overlay

@@ -82,8 +82,6 @@ public class ProsesAdapter extends RecyclerView.Adapter<ProsesAdapter.ViewHolder
             holder.txtKet.setText(keterangan);
         }
 
-
-
         holder.txtNama.setText(nama);
 
         holder.txtJumlah.setText("x"+String.valueOf(jumlah));
@@ -135,15 +133,10 @@ public class ProsesAdapter extends RecyclerView.Adapter<ProsesAdapter.ViewHolder
                     Toast.makeText(context, "Masukkan Jumlah Produk !", Toast.LENGTH_SHORT).show();
                 }
 
-
             });
-
 
             dialog.show();
         });
-
-
-
 
     }
 

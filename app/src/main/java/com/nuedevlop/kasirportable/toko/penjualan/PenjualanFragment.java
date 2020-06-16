@@ -415,7 +415,7 @@ public class PenjualanFragment extends Fragment {
             totalBeli = totalBeli + (proses.get(i).getHargaBeli()*proses.get(i).getJumlah());
         }
         laba = totalJual-totalBeli;
-        txtTotal.setText(kursIndonesia.format(totalBeli));
+        txtTotal.setText(kursIndonesia.format(totalJual));
 
 
 

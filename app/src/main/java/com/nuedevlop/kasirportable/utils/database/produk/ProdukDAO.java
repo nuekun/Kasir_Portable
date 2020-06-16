@@ -1,9 +1,13 @@
 package com.nuedevlop.kasirportable.utils.database.produk;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,12 @@ public interface ProdukDAO {
 
     @Query("SELECT * FROM produk WHERE idProduk =:idProduk")
     List<Produk> getProdukByID(int idProduk);
+
+    @Query("SELECT * FROM produk")
+    Cursor getALL();
+
+    @RawQuery()
+    Boolean insertDataRawFormat(SupportSQLiteQuery query);
 
 
 

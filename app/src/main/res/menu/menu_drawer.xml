@@ -26,6 +26,21 @@
         android:title="Printer" />
     </menu>
     </item>
+
+    <item
+        android:title="database">
+        <menu>
+            <item
+                android:id="@+id/drawerbackup"
+                android:icon="@drawable/ic_file_upload_black_24dp"
+                android:title="backup" />
+            <item
+            android:id="@+id/drawerLoad"
+            android:icon="@drawable/ic_file_download_black_24dp"
+            android:title="Load" />
+        </menu>
+    </item>
+
     <item
          android:title="Akun">
         <menu>
