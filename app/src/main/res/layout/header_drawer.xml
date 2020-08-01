@@ -3,13 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="190dp"
     android:background="@color/colorPrimary"
+    android:gravity="bottom|right"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtHeaderNamaToko"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:orientation="horizontal" />
+        android:layout_height="wrap_content"
+        android:text="Nama Toko"
+        android:textColor="@color/tabSelectedIconColor"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtHeaderEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="email@domain.com"
+        android:textColor="@color/tabSelectedIconColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

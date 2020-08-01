@@ -1,25 +1,42 @@
 package com.nuedevlop.kasirportable;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mortgage.fauxiq.pawnbroker.utils.CSVReader;
@@ -27,23 +44,33 @@ import com.nuedevlop.kasirportable.stok.StokFragment;
 import com.nuedevlop.kasirportable.toko.TokoFragment;
 import com.nuedevlop.kasirportable.transaksi.TransaksiFragment;
 import com.nuedevlop.kasirportable.utils.CSV;
+import com.nuedevlop.kasirportable.utils.Utils;
 import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
 import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
+import com.nuedevlop.kasirportable.utils.koneksi;
+import com.nuedevlop.kasirportable.utils.pengguna.Hasil;
+import com.nuedevlop.kasirportable.utils.pengguna.ProfilToko;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     NavigationView drawer;
     DrawerLayout drawerLayout;
     ImageButton btnDrawer;
-    TextView txtTittle;
+    TextView txtTittle,txtHeaderEmail,txtHeaderNamaToko;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
     int count = 3;
     CSV csv;
     ProdukDAO produkDAO;
+    NavigationView header;
+    private SharedPreferences profil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        profil = getSharedPreferences("profil", MODE_PRIVATE);
+        header = findViewById(R.id.mainDrawer);
         drawer = findViewById(R.id.mainDrawer);
         drawerLayout = findViewById(R.id.mainDrawerLayout);
         btnDrawer = findViewById(R.id.btnDrawer);
@@ -103,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                     boolean emailVerified = currentUser.isEmailVerified();
                     if(emailVerified==true){
 
+                        dialog_profil();
+
                     }else{
                         Toast.makeText(MainActivity.this, "silahkan konfirmasi email terebih dahulu, sikahkan cek email masuk.", Toast.LENGTH_SHORT).show();
                     }
@@ -129,19 +160,203 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
 
-                        csvReader = new CSVReader(new FileReader(Environment.getExternalStorageDirectory() + "/kasir/produk.csv"));
+                        csvReader = new CSVReader(new FileReader(
+                                Environment.getExternalStorageDirectory()+"/kasir/produk.csv"));
                         csv.importProduk(csvReader,produkDAO,MainActivity.this);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, "file tidak di temukan!"
+                                +Environment.getExternalStorageDirectory() + "/kasir/produk.csv",
+                                Toast.LENGTH_SHORT).show();
                     }
-
-
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
     };
+
+    private void dialog_profil() {
+
+        TextInputEditText txtNamaProfil,txtNoProfil,txtAlamatProfil;
+        TextView txtEmailProfil;
+        ImageButton btnEmailProfil;
+        Button btnCancelProfil,btnSimpanProfil;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.dialog_profil, null);
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+
+        txtAlamatProfil = view.findViewById(R.id.txtProfilAlamat);
+        txtNoProfil = view.findViewById(R.id.txtProfilNoHP);
+        txtNamaProfil = view.findViewById(R.id.txtProfilNamaToko);
+        txtEmailProfil =view.findViewById(R.id.txtProfilEmail);
+        btnEmailProfil = view.findViewById(R.id.btnProfilEmail);
+        btnSimpanProfil = view.findViewById(R.id.btnProfilOk);
+        btnCancelProfil = view.findViewById(R.id.btnProfilback);
+
+        txtEmailProfil.setText(currentUser.getEmail());
+
+        btnCancelProfil.setOnClickListener(v2->{
+            dialog.hide();
+        });
+
+
+        btnSimpanProfil.setOnClickListener(v2->{
+            String uid,email,nama,alamat,nohp;
+            email = txtEmailProfil.getText().toString();
+            nama = txtNamaProfil.getText().toString();
+            alamat=txtAlamatProfil.getText().toString();
+            nohp=txtNoProfil.getText().toString();
+            uid = currentUser.getUid();
+            updateProfil(uid,email,nama,alamat,nohp,dialog);
+        });
+
+
+
+        dialog.show();
+
+    }
+
+    private void updateProfil(String uid, String email, String nama, String alamat, String nohp, AlertDialog dialog) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, koneksi.update_profil, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.contains("1")) {
+                    profil.edit().putString("nama", nama).apply();
+                    profil.edit().putString("alamat", alamat).apply();
+                    profil.edit().putString("nohp", nohp).apply();
+                    loadProfil();
+
+
+                    dialog.hide();
+                    Toast.makeText(MainActivity.this, "berhasil", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Toast.makeText(MainActivity.this, "gagal mengupdate profil",Toast.LENGTH_LONG).show();
+                    dialog.hide();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                dialog.hide();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+
+                map.put("uid",uid);
+                map.put("email",email);
+                map.put("nama", nama);
+                map.put("no", nohp);
+                map.put("alamat", alamat);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void loadProfil() {
+
+        String nama;
+        nama = profil.getString("nama", "nama toko");
+        txtHeaderNamaToko = drawer.getHeaderView(0).findViewById(R.id.txtHeaderNamaToko);
+        txtHeaderNamaToko.setText(nama);
+        txtHeaderEmail = drawer.getHeaderView(0).findViewById(R.id.txtHeaderEmail);
+        txtHeaderEmail.setText(currentUser.getEmail());
+
+        if (nama.equals("nama toko")){
+            if (!Utils.isNetworkAvailable(MainActivity.this)) {
+                Toast.makeText(MainActivity.this,
+                        "tidak ada koneksi yang tersedia. hubungkan ke internet !",
+                        Toast.LENGTH_SHORT).show();
+            } else ambil_profil_online();
+        }
+    }
+
+    private void ambil_profil_online() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, koneksi.ambil_profil, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.contains("1")) {
+
+                    ProfilToko profilToko = (ProfilToko) Utils.jsonToPojo(response,ProfilToko.class);
+                    Hasil hasil = new Hasil();
+                    hasil = profilToko.getHasil().get(0);
+                    profil.edit().putString("nama", hasil.getNamaToko()).apply();
+                    profil.edit().putString("alamat", hasil.getAlamat()).apply();
+                    profil.edit().putString("nohp", hasil.getNoHp()).apply();
+                    loadProfil();
+                }else{
+                    Toast.makeText(MainActivity.this, "belum mengisi profil!",Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("uid",currentUser.getUid());
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+
+
+
+
+//
+//
+//        String url = koneksi.ambil_profil;
+//
+//        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+//                response -> {
+//                    Log.e("api response", response);
+//
+//                    ProfilToko profilToko = (ProfilToko) Utils.jsonToPojo(response,ProfilToko.class);
+//
+//                    if (profilToko.getSuccess().equals("1")) {
+//
+//                        Hasil hasil = new Hasil();
+//                        hasil = profilToko.getHasil().get(0);
+//                        profil.edit().putString("nama", hasil.getNamaToko()).apply();
+//                        profil.edit().putString("alamat", hasil.getAlamat()).apply();
+//                        profil.edit().putString("nohp", hasil.getNoHp()).apply();
+//                        loadProfil();
+//
+//                    } else {
+//                        Log.e("tag", "list empty==");
+//                        Toast.makeText(MainActivity.this, "Anda belum mengisi profil !",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                }, error ->
+//                Toast.makeText(MainActivity.this,
+//                        "That didn't work! :(",
+//                        Toast.LENGTH_SHORT).show()
+//        );
+//
+//
+//
+//// Add the request to the RequestQueue.
+//        queue.add(stringRequest);
+
+
+    }
 
 
 //    private void loadProduk() {
@@ -258,7 +473,9 @@ public class MainActivity extends AppCompatActivity {
     private void Logout() {
 
         FirebaseAuth.getInstance().signOut();
-
+        profil.edit().putString("nama", "nama toko").apply();
+        profil.edit().putString("alamat", "").apply();
+        profil.edit().putString("nohp", "").apply();
         Intent intent = new Intent(this,EmailPasswordActivity.class);
         startActivity(intent);
         finish();
@@ -270,6 +487,10 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
         updateUI();
+        if(currentUser!=null){
+
+            loadProfil();
+        }
     }
 
     private void updateUI() {

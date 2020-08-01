@@ -1,4 +1,4 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.transaksi;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

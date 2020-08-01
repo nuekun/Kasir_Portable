@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.nuedevlop.kasirportable.adapter.DetailTransaksiAdapter;
-import com.nuedevlop.kasirportable.adapter.TransaksiAdapter;
-import com.nuedevlop.kasirportable.utils.database.Refrensi;
-import com.nuedevlop.kasirportable.utils.database.Transaksi;
-import com.nuedevlop.kasirportable.utils.database.TransaksiDAO;
-import com.nuedevlop.kasirportable.utils.database.TransaksiDB;
+import com.nuedevlop.kasirportable.utils.database.refrensi.Refrensi;
+import com.nuedevlop.kasirportable.utils.database.transaksi.Transaksi;
+import com.nuedevlop.kasirportable.utils.database.transaksi.TransaksiDAO;
+import com.nuedevlop.kasirportable.utils.database.transaksi.TransaksiDB;
 
 import java.util.List;
 

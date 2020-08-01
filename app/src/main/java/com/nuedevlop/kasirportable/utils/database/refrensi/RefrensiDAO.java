@@ -1,4 +1,4 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.refrensi;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -12,8 +12,8 @@ public interface RefrensiDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Refrensi... refrensis);
 
-    @Query("SELECT * FROM refrensi ORDER BY idRefrensi DESC")
-    List<Refrensi> getAllProses();
+    @Query("SELECT * FROM refrensi WHERE tanggal like '%'||:tanggal||'%' and jenis like '%'||:jenis||'%' ORDER BY idRefrensi DESC")
+    List<Refrensi> getAllProses(String tanggal, String jenis);
 
     @Query("DELETE FROM Refrensi WHERE refrensi = :refrensi")
     void deleteRefrensi(String refrensi);

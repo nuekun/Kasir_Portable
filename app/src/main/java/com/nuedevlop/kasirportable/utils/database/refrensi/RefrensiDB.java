@@ -1,4 +1,4 @@
-package com.nuedevlop.kasirportable.utils.database;
+package com.nuedevlop.kasirportable.utils.database.refrensi;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

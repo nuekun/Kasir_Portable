@@ -3,6 +3,7 @@ package com.nuedevlop.kasirportable.toko.penjualan;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.Gson;
 import com.mazenrashed.printooth.Printooth;
 import com.mazenrashed.printooth.data.printable.Printable;
 import com.mazenrashed.printooth.data.printable.TextPrintable;
@@ -36,12 +36,12 @@ import com.nuedevlop.kasirportable.R;
 import com.nuedevlop.kasirportable.adapter.ProdukAdapter;
 import com.nuedevlop.kasirportable.adapter.ProsesAdapter;
 import com.nuedevlop.kasirportable.utils.Utils;
-import com.nuedevlop.kasirportable.utils.database.Refrensi;
-import com.nuedevlop.kasirportable.utils.database.RefrensiDAO;
-import com.nuedevlop.kasirportable.utils.database.RefrensiDB;
-import com.nuedevlop.kasirportable.utils.database.Transaksi;
-import com.nuedevlop.kasirportable.utils.database.TransaksiDAO;
-import com.nuedevlop.kasirportable.utils.database.TransaksiDB;
+import com.nuedevlop.kasirportable.utils.database.refrensi.Refrensi;
+import com.nuedevlop.kasirportable.utils.database.refrensi.RefrensiDAO;
+import com.nuedevlop.kasirportable.utils.database.refrensi.RefrensiDB;
+import com.nuedevlop.kasirportable.utils.database.transaksi.Transaksi;
+import com.nuedevlop.kasirportable.utils.database.transaksi.TransaksiDAO;
+import com.nuedevlop.kasirportable.utils.database.transaksi.TransaksiDB;
 import com.nuedevlop.kasirportable.utils.database.produk.Produk;
 import com.nuedevlop.kasirportable.utils.database.produk.ProdukDAO;
 import com.nuedevlop.kasirportable.utils.database.produk.ProdukDB;
@@ -59,7 +59,6 @@ import java.util.UUID;
 
 import static com.nuedevlop.kasirportable.utils.Utils.formate_refrensi;
 import static com.nuedevlop.kasirportable.utils.Utils.formate_year_month_day_hour_minute_second;
-
 
 public class PenjualanFragment extends Fragment {
 
@@ -81,6 +80,7 @@ public class PenjualanFragment extends Fragment {
     private UUID uuid = UUID.randomUUID();
     RefrensiDAO refrensiDAO ;
     private ProdukDAO produkDAO;
+    private SharedPreferences profil;
 
     int laba,totalBeli,totalJual;
 
@@ -123,16 +123,19 @@ public class PenjualanFragment extends Fragment {
             btnBatal = v2.findViewById(R.id.btnDialogCetakBatal);
             btnSimpan = v2.findViewById(R.id.btnDialogCetakTidak);
             btncetak = v2.findViewById(R.id.btnDialogCetakYa);
-
             btnBatal.setOnClickListener(v3->dialog.dismiss());
             btnSimpan.setOnClickListener(v3->{
                 simpanTransaksi(tanggal,refrensi);
                 dialog.dismiss();
-
             });
             btncetak.setOnClickListener(v3->{
-                cetakStrukk();
-                simpanTransaksi(tanggal,refrensi);
+                if(printing!=null){
+                    cetakStrukk();
+                    simpanTransaksi(tanggal,refrensi);
+                }
+                else {
+                    Toast.makeText(context, "printer tidak terhubung !", Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
             });
 
@@ -152,16 +155,16 @@ public class PenjualanFragment extends Fragment {
 
         for (Proses proses : proses) {
             Transaksi transaksi = new Transaksi();
-                transaksi.setDetail(proses.getDetail());
-                transaksi.setHargaBeli(proses.getHargaBeli());
-                transaksi.setHargaJual(proses.getHargaJual());
-                transaksi.setIdProduk(proses.getIdProduk());
-                transaksi.setJumlah(proses.getJumlah());
-                transaksi.setNama(proses.getNama());
-                transaksi.setJenis(proses.getJenis());
-                transaksi.setTipe("penjualan");
-                transaksi.setRefrensi(refrensi);
-                transaksi.setTanggal(tanggal);
+            transaksi.setDetail(proses.getDetail());
+            transaksi.setHargaBeli(proses.getHargaBeli());
+            transaksi.setHargaJual(proses.getHargaJual());
+            transaksi.setIdProduk(proses.getIdProduk());
+            transaksi.setJumlah(proses.getJumlah());
+            transaksi.setNama(proses.getNama());
+            transaksi.setJenis(proses.getJenis());
+            transaksi.setTipe("penjualan");
+            transaksi.setRefrensi(refrensi);
+            transaksi.setTanggal(tanggal);
             transaksiDAO.insert(transaksi);
 
             List<Produk> produkList = produkDAO.getProdukByID(proses.getIdProduk());
@@ -173,7 +176,7 @@ public class PenjualanFragment extends Fragment {
         ref.setRefrensi(refrensi);
         ref.setJenis("penjualan");
         ref.setTanggal(tanggal);
-        ref.setValuasi(laba);
+        ref.setValuasi(totalJual);
 
         refrensiDAO.insert(ref);
 
@@ -185,76 +188,75 @@ public class PenjualanFragment extends Fragment {
 
         //kursIndonesia.format(total);
 
-        if (printing!=null){
-            ArrayList<Printable> al = new ArrayList<>();
+        String namaToko,alamatToko ;
 
-//            al.add((new TextPrintable.Builder())
-//                    .setText("Nama Toko")
-//                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
-//                    .setNewLinesAfter(1)
-//                    .build());
-//            al.add((new TextPrintable.Builder())
-//                    .setText("Alamat Toko dan no HP")
-//                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
-//                    .setUnderlined(DefaultPrinter.Companion.getUNDERLINED_MODE_ON())
-//                    .setNewLinesAfter(1)
-//                    .build());
-//
+        namaToko = profil.getString("nama", "nama toko");
 
-            int totalItem = 0 ;
-            int tagihan=0;
+        alamatToko = profil.getString("alamat", "alamat toko");
+        ArrayList<Printable> al = new ArrayList<>();
 
-            for(int position = 0 ; position<proses.size();position++){
-                String nama = proses.get(position).getNama();
-                String jenis = proses.get(position).getJenis();
-                int jumlah = proses.get(position).getJumlah();
-                int hargaJual = proses.get(position).getHargaJual();
-                String harga = kursIndonesia.format(jumlah*hargaJual);
-                al.add((new TextPrintable.Builder())
-                        .setText("("+jenis+")"+nama+" x "+jumlah)
-                        .setAlignment(DefaultPrinter.Companion.getALIGNMENT_LEFT())
-                        .setNewLinesAfter(1)
-                        .build());
+        if (namaToko.equals("nama toko")){} else {
+            al.add((new TextPrintable.Builder())
+                    .setText(namaToko)
+                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
+                    .setNewLinesAfter(1)
+                    .build());}
 
-                al.add((new TextPrintable.Builder())
-                        .setText(harga)
-                        .setAlignment(DefaultPrinter.Companion.getALIGNMENT_RIGHT())
-                        .setNewLinesAfter(1)
-                        .build());
-
-                totalItem = totalItem + jumlah;
-                tagihan = tagihan +(jumlah*hargaJual);
-
-            }
-
-
+        if (alamatToko.equals("alamat toko")){}else {
 
             al.add((new TextPrintable.Builder())
-                    .setText("Total item "+totalItem)
+                    .setText(alamatToko)
+                    .setAlignment(DefaultPrinter.Companion.getALIGNMENT_CENTER())
+                    .setUnderlined(DefaultPrinter.Companion.getUNDERLINED_MODE_ON())
+                    .setNewLinesAfter(1)
+                    .build());
+        }
+        int totalItem = 0 ;
+        int tagihan=0;
+
+        for(int position = 0 ; position<proses.size();position++){
+            String nama = proses.get(position).getNama();
+            String jenis = proses.get(position).getJenis();
+            int jumlah = proses.get(position).getJumlah();
+            int hargaJual = proses.get(position).getHargaJual();
+            String harga = kursIndonesia.format(jumlah*hargaJual);
+            al.add((new TextPrintable.Builder())
+                    .setText("("+jenis+")"+nama+" x "+jumlah)
                     .setAlignment(DefaultPrinter.Companion.getALIGNMENT_LEFT())
                     .setNewLinesAfter(1)
                     .build());
 
             al.add((new TextPrintable.Builder())
-                    .setText("Tagihan "+"("+kursIndonesia.format(tagihan)+")")
+                    .setText(harga)
                     .setAlignment(DefaultPrinter.Companion.getALIGNMENT_RIGHT())
                     .setNewLinesAfter(1)
                     .build());
 
+            totalItem = totalItem + jumlah;
+            tagihan = tagihan +(jumlah*hargaJual);
 
-
-            printing.print(al);
-        }else {
-            Toast.makeText(context, "Printer Tidak Terhubung!", Toast.LENGTH_SHORT).show();
         }
+        al.add((new TextPrintable.Builder())
+                .setText("Total item "+totalItem)
+                .setAlignment(DefaultPrinter.Companion.getALIGNMENT_LEFT())
+                .setNewLinesAfter(1)
+                .build());
 
+        al.add((new TextPrintable.Builder())
+                .setText("Tagihan "+"("+kursIndonesia.format(tagihan)+")")
+                .setAlignment(DefaultPrinter.Companion.getALIGNMENT_RIGHT())
+                .setNewLinesAfter(1)
+                .build());
 
+        printing.print(al);
     }
 
     private void init() {
         btnProses = view.findViewById(R.id.btnPenjualanProses);
         btnTambah = view.findViewById(R.id.btnPenjualanTambah);
         txtTotal = view.findViewById(R.id.txtPenjualanTotal);
+
+        profil = this.getActivity().getSharedPreferences("profil", Context.MODE_PRIVATE);
 
         produkDAO = Room.databaseBuilder(context, ProdukDB.class,"Produk")
                 .allowMainThreadQueries()

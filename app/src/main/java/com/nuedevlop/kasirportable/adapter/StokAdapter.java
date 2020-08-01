@@ -2,7 +2,6 @@ package com.nuedevlop.kasirportable.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nuedevlop.kasirportable.DetailTransaksiActivity;
 import com.nuedevlop.kasirportable.R;
-import com.nuedevlop.kasirportable.utils.database.Refrensi;
 import com.nuedevlop.kasirportable.utils.database.produk.Produk;
 
 import java.text.DecimalFormat;

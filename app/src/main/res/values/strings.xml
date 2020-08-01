@@ -11,6 +11,7 @@
     <string name="password_strength_crazy_strong">Edan !!!</string>
 
     <string-array name="spin_transaksi">
+        <item>Semua</item>
         <item>Penjualan</item>
         <item>Pengembalian</item>
         <item>Pembelian</item>

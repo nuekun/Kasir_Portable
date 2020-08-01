@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nuedevlop.kasirportable.DetailTransaksiActivity;
 import com.nuedevlop.kasirportable.R;
-import com.nuedevlop.kasirportable.utils.database.Refrensi;
+import com.nuedevlop.kasirportable.utils.database.refrensi.Refrensi;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
         valuasi = refrensis.get(position).getValuasi();
 
         holder.txtJudul.setText(jenis);
-        holder.txtKeterangan.setText(String.valueOf(valuasi));
+        holder.txtKeterangan.setText(tanggal);
         holder.root.setOnClickListener(v->{
 
             Intent intent = new Intent(context, DetailTransaksiActivity.class);
